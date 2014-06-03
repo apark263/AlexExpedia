@@ -9,9 +9,7 @@ import pandas as pd
 def write_RLfile(rl_lines, RLset):
     outfile = get_paths()[RLset+"_path"] 
     writer = open(outfile, "w")
-    writer.writelines(trainlines)
-
-    	
+    writer.writelines(rl_lines)
 
 def get_paths():
     paths = json.loads(open("SETTINGS.json").read())
@@ -20,7 +18,6 @@ def get_paths():
     return paths
 
 def read_train():
-	print "This One"
 	train_path = get_paths()["train_path"]
 	return pd.read_csv(train_path)
 

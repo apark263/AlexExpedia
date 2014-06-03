@@ -171,7 +171,7 @@ def train_model():
 	print "Begin Training"
 	print "Running " + cmdstring + argstring
 
-	status = call(cmdstring + argstring)
+	status = call(cmdstring + argstring, shell=True)
 	
 
 def test_model():
@@ -191,7 +191,7 @@ def test_model():
 	print "Begin Testing"
 	print "Running " + cmdstring + argstring
 
-	status = call(cmdstring + argstring)
+	status = call(cmdstring + argstring, shell=True)
 			
 def main(argv):
 	mode = ''
