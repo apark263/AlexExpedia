@@ -7,6 +7,7 @@ from scipy import sparse
 import math
 import cPickle as pickle
 from subprocess import call
+import sys, getopt
 
 def calc_prop_features(train, test, recalc=0):
 	if (recalc == 0):
@@ -153,14 +154,14 @@ def dump_train_data():
 	save_data_to_ranklib(test[feature_names].values, np.zeros(len(test)), 'RLtest')
 
 def train_model():
-	jv_exec = data_io.get_paths()["features_cache"]
+	jv_exec = data_io.get_paths()["java_path"]
 	rank_lib = data_io.get_paths()["ranklib_path"]
 	model_file = data_io.get_paths()["model_path"]
 	train_file = data_io.get_paths()["RLtrain_path"]
 	dev_file = data_io.get_paths()["RLdev_path"]
 	
 	cmdstring = jv_exec
-	argstring += " -jar " + rank_lib
+	cmdstring += " -jar " + rank_lib
 
 	argstring  = " -train " + train_file
 	argstring += " -validate " + dev_file
@@ -174,15 +175,16 @@ def train_model():
 	
 
 def test_model():
-	jv_exec = data_io.get_paths()["features_cache"]
+	jv_exec = data_io.get_paths()["java_path"]
 	rank_lib = data_io.get_paths()["ranklib_path"]
 	model_file = data_io.get_paths()["model_path"]
 	test_file = data_io.get_paths()["RLtest_path"]
+	score_file = data_io.get_paths()["score_path"]
 
 	cmdstring = jv_exec
-	argstring += " -jar " + rank_lib
+	cmdstring += " -jar " + rank_lib
 	
-	argstring += " -load " + model_file
+	argstring  = " -load " + model_file
 	argstring += " -rank " + test_file
 	argstring += " -score " + score_file
 
@@ -190,15 +192,35 @@ def test_model():
 	print "Running " + cmdstring + argstring
 
 	status = call(cmdstring + argstring)
+			
+def main(argv):
+	mode = ''
+	usage_string = 'FeaturePick.py -m <train|test|data>'
+	
+	try:
+		opts, args = getopt.getopt(argv,"m:",["mode="])
+	except getopt.GetoptError:
+		print usage_string
+		sys.exit(2)	
+	for opt, arg in opts:
+		if opt in ("-m", "--mode"):
+			mode = arg
+			
+	if (mode == 'train'):
+		train_model()
+	elif (mode == 'test'):
+		test_model()
 		
-	
-def main():
-	
-	LR_score_to_submission()
+		#LR_score_to_submission()
+	elif (mode == 'data'):
+		print "Generating Training data"
+		dump_train_data()
+	else:
+		print usage_string
 		
 	
 if __name__=="__main__":
-    main()
+    main(sys.argv[1:])
 
 #TODO Normalized price
 #	

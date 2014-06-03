@@ -1,8 +1,8 @@
 {
-    "model_path":      "/Volumes/Data/alexpark/ExpediaPersonalizedSortCompetition/Release 1/LM_model.txt",
-    "submission_path": "/Volumes/Data/alexpark/ExpediaPersonalizedSortCompetition/Release 1/submission.csv",
-    "train_path":      "/Volumes/Data/alexpark/ExpediaPersonalizedSortCompetition/Release 1/train.csv",
-    "test_path":       "/Volumes/Data/alexpark/ExpediaPersonalizedSortCompetition/Release 1/test.csv",
+    "model_path":      "/Volumes/Data/alexpark/ExpediaPersonalizedSortCompetition/Release1/LM_model.txt",
+    "submission_path": "/Volumes/Data/alexpark/ExpediaPersonalizedSortCompetition/Release1/submission.csv",
+    "train_path":      "/Volumes/Data/alexpark/ExpediaPersonalizedSortCompetition/Release1/train.csv",
+    "test_path":       "/Volumes/Data/alexpark/ExpediaPersonalizedSortCompetition/Release1/test.csv",
     "RLtrain_path":    "/Volumes/Data2/RLb.train`.txt",
     "RLdev_path":      "/Volumes/Data2/RLb.dev.txt",
     "RLtest_path":     "/Volumes/Data2/RLb.test.txt",
