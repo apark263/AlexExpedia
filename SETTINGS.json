@@ -1,0 +1,15 @@
+{
+    "model_path":      "/Volumes/Data/alexpark/ExpediaPersonalizedSortCompetition/Release 1/LM_model.txt",
+    "submission_path": "/Volumes/Data/alexpark/ExpediaPersonalizedSortCompetition/Release 1/submission.csv",
+    "train_path":      "/Volumes/Data/alexpark/ExpediaPersonalizedSortCompetition/Release 1/train.csv",
+    "test_path":       "/Volumes/Data/alexpark/ExpediaPersonalizedSortCompetition/Release 1/test.csv",
+    "RLtrain_path":    "/Volumes/Data2/RLb.train`.txt",
+    "RLdev_path":      "/Volumes/Data2/RLb.dev.txt",
+    "RLtest_path":     "/Volumes/Data2/RLb.test.txt",
+    "score_path":     "/Volumes/Data2/scorefile.txt",
+    "features_cache":  "/Volumes/Data2/features_cache.pickle",
+    "ranklib_path":    "/Volumes/Data/alexpark/Public/RankLib-2.1-patched.jar",
+    "java_path":       "/usr/local/bin/java"
+    
+
+}
