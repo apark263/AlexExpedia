@@ -96,6 +96,22 @@ def normalize_price_key(tlist, key, addset=None):
 	
 	tlist['norm_px_'+key] = np.log10(px_array) - px_avg[tlist[key].values]
 
+
+#normalize some numerical quantity by some category
+def normalize_quantity_key(tlist, quantkey, key, addset=None):
+	qx_array = tlist[quantkey].values
+	val_array = tlist[key].values
+	if ((addset is None)==False):
+		qx_array = np.concatenate((qx_array, addset[quantkey].values))
+		val_array = np.concatenate((val_array, addset[key].values))
+	qx_avg = get_avg_vector(val_array, qx_array)
+
+	if ((addset is None)==False):
+		qx_array = tlist[quantkey].values
+	
+	tlist['norm_' + quantkey + '_' +key] = qx_array/qx_avg[tlist[key].values]
+
+
 def replace_history_features(tlist):
 	tlist['visitor_hist_starrating'] = abs(tlist['visitor_hist_starrating']-tlist['prop_starrating'])	
 	tlist['visitor_hist_adr_usd'] = abs(tlist['visitor_hist_adr_usd']-tlist['price_usd'])
@@ -120,6 +136,19 @@ def augment_data(tlist, addset=None):
 	replace_history_features(tlist)
 	for setname in ['srch_id', 'prop_id', 'srch_destination_id']:
 		normalize_price_key(tlist, setname, addset)
+	
+	for setname in ['srch_id', 'srch_destination_id']:
+		for quantkey in ['prop_location_score1', 'prop_review_score', 'prop_starrating', 'prop_log_historical_price']:
+			normalize_quantity_key(tlist, quantkey, setname, addset)
+
+	for setname in ['prop_id', 'srch_destination_id']:
+		for quantkey in ['srch_booking_window', 'srch_query_affinity_score']:
+			normalize_quantity_key(tlist, quantkey, setname, addset)
+
+	for setname in ['srch_id', 'prop_id', 'srch_destination_id']:
+		for quantkey in ['orig_destination_distance']:
+			normalize_quantity_key(tlist, quantkey, setname, addset)
+
 				
 def LR_score_to_submission():
 	test = data_io.read_test()
@@ -160,11 +189,11 @@ def dump_train_data():
 	train_only.fillna(0, inplace=True)
 	dev.fillna(0, inplace=True)
 	test.fillna(0, inplace=True)
-	train_target = np.maximum(train_only['booking_bool'].values*5, train_only['click_bool'].values)
 	dev_target = np.maximum(dev['booking_bool'].values*5, dev['click_bool'].values)
 	
 	#downsampled training examples
 	train_index = train_only[(train_only['booking_bool'] != 0) | (train_only['click_bool'] != 0) | (train_only.index % 3 == 1)].index
+	train_target = np.maximum(train_only.loc[train_index]['booking_bool'].values*5, train_only.loc[train_index]['click_bool'].values)
 	print "Dev/Train: ", len(dev), len(train_index)
 	
 	save_data_to_ranklib(dev[feature_names].values, dev_target, 'RLdev')
